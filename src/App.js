@@ -37,10 +37,10 @@ class App extends React.Component {
   };
 
   stream = new EventSource("http://localhost:4000/stream");
-  //eventsource is built in js
+  //eventsource is built in js, sends a request to the stream
 
   componentDidMount() {
-    //event mounts the data in console
+    //event mounts the data in console, when the data arrives over the stream, run the function and pass this is an argument.
     this.stream.onmessage = event => {
       console.log("event.data test", event.data);
     };
