@@ -8,12 +8,16 @@ class App extends React.Component {
 
   onSubmit = async event => {
     event.preventDefault();
+
     try {
       const res = await superagent
         .post("http://localhost:4000/message")
         .send({ text: this.state.text });
 
       console.log(res);
+      this.setState({
+        text: ""
+      });
     } catch (error) {
       console.error(error);
     }
@@ -31,6 +35,16 @@ class App extends React.Component {
       text: ""
     });
   };
+
+  stream = new EventSource("http://localhost:4000/stream");
+  //eventsource is built in js
+
+  componentDidMount() {
+    //event mounts the data in console
+    this.stream.onmessage = event => {
+      console.log("event.data test", event.data);
+    };
+  }
   render() {
     return (
       <div>
@@ -38,7 +52,9 @@ class App extends React.Component {
         <form onSubmit={this.onSubmit}>
           <input type="text" onChange={this.onChange} value={this.state.text} />
           <button>Send</button>
-          <button onClick={this.reset}>Reset</button>
+          <button type="button" onClick={this.reset}>
+            Reset
+          </button>
         </form>
       </div>
     );
