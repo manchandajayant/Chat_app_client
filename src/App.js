@@ -58,8 +58,7 @@ class App extends React.Component {
     };
   };
   render() {
-    console.log("text", this.state.text);
-    // const message = this.state.text.map(txt=>)
+    const message = this.props.messages.map(msg => <div>{msg}</div>);
     return (
       <div>
         Hello!!This app is working
@@ -70,12 +69,18 @@ class App extends React.Component {
             Reset
           </button>
         </form>
+        <div>{message}</div>
       </div>
     );
   }
 }
 //connect is a thunk, it is a function that return another function
 // Below is one way of writing it
-const connector = connect();
-const connected = connector(App);
-export default connected;
+function mapStateToProps(reduxState) {
+  return {
+    messages: reduxState.messages
+  };
+}
+// const connector = connect(mapStateToProps);
+// const connected = connector(App);
+export default connect(mapStateToProps)(App);
